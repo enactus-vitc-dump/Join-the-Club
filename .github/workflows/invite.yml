@@ -1,0 +1,37 @@
+name: Secure Auto Invite to Organization
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  invite-success:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.title, 'Join') && contains(github.event.issue.body, 'Khul Ja Sim Sim')
+    
+    steps:
+      - name: Send Organization Invite
+        uses: thomas-darling/invite-to-org@v1.2.3
+        with:
+          org: enactus-vitc-dump
+          token: ${{ secrets.INVITE_TOKEN }}
+          username: ${{ github.event.issue.user.login }}
+
+      - name: Welcome Comment & Close
+        uses: peter-evans/close-issue@v3
+        with:
+          token: ${{ secrets.INVITE_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          comment: "✅ **Authentication Successful!** Welcome to the team. Check your email or your GitHub dashboard notifications for your organization invite! 🎉"
+
+  invite-failed:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.title, 'Join') && !contains(github.event.issue.body, 'Enactus_VITC_2026')
+    
+    steps:
+      - name: Access Denied Comment & Close
+        uses: peter-evans/close-issue@v3
+        with:
+          token: ${{ secrets.INVITE_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          comment: "❌ **Access Denied:** The passphrase you provided is missing or incorrect. If you are an official club member, please check our internal pinned messages for the correct password and try again."
