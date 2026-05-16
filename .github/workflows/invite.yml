@@ -16,7 +16,7 @@ jobs:
           github-token: ${{ secrets.INVITE_TOKEN }}
           script: |
             await github.rest.orgs.setMembershipForUser({
-              org: 'enactus-vitc-dump',
+              org: 'EnactusVITC-Dump',
               username: context.payload.issue.user.login,
               role: 'member'
             });
