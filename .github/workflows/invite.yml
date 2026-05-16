@@ -26,7 +26,8 @@ jobs:
 
   invite-failed:
     runs-on: ubuntu-latest
-    if: contains(github.event.issue.title, 'Join') && !contains(github.event.issue.body, 'Enactus_VITC_2026')
+    # Changed 'Enactus_VITC_2026' to 'Khul Ja Sim Sim' here so the failure logic triggers correctly!
+    if: contains(github.event.issue.title, 'Join') && !contains(github.event.issue.body, 'Khul Ja Sim Sim')
     
     steps:
       - name: Access Denied Comment & Close
